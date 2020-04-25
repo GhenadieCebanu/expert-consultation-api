@@ -12,4 +12,6 @@ public interface DocumentNodeService {
     DocumentNode create(final DocumentNode documentNode);
 
     DocumentNode update(DocumentNode documentNode);
+
+    void deleteById(UUID id);
 }

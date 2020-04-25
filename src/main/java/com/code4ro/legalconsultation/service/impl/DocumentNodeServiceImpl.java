@@ -54,4 +54,10 @@ public class DocumentNodeServiceImpl implements DocumentNodeService {
         log.info("Update DocumentNode: {}", documentNode);
         return documentNodeRepository.save(documentNode);
     }
+
+    @Override
+    public void deleteById(UUID id) {
+        log.info("Delete DocumentNode by id: {}", id);
+        documentNodeRepository.deleteById(id);
+    }
 }

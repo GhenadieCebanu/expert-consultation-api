@@ -35,9 +35,10 @@ public class DocumentNodeController {
 
     @ApiOperation(value = "Create a new document node in the platform",
             response = UUID.class,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UUID> createDocument(
+    public ResponseEntity<UUID> create(
             @Valid @RequestBody DocumentNodeDto documentNodeDto) {
 
         DocumentNode inputDocumentNode = mapper.map(documentNodeDto);
@@ -45,5 +46,23 @@ public class DocumentNodeController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(documentNode.getId());
+    }
+
+    @ApiOperation(value = "Modify a saved document node in the platform",
+            response = UUID.class,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UUID> modifyDocument(@ApiParam(value = "Id of the document node being modified") @PathVariable("id") UUID id,
+                                               @Valid @RequestBody DocumentNodeDto documentNodeDto) {
+        DocumentNode inputDocumentNode = mapper.map(documentNodeDto);
+        DocumentNode documentNode = documentNodeService.update(inputDocumentNode);
+        return ResponseEntity.ok(documentNode.getId());
+    }
+
+    @ApiOperation(value = "Delete document node based on id")
+    @DeleteMapping("/{id}")
+    public void deleteDocument(@ApiParam("Id of the document node being deleted") @PathVariable UUID id) {
+        documentNodeService.deleteById(id);
     }
 }
