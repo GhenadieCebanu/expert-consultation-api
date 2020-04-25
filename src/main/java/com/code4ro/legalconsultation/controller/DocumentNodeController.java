@@ -27,7 +27,7 @@ public class DocumentNodeController {
             response = DocumentNodeDto.class,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public DocumentNodeDto getDocumentById(@ApiParam("Id of the document node object being requested") @PathVariable UUID id) {
+    public DocumentNodeDto getDocumentNodeById(@ApiParam("Id of the document node object being requested") @PathVariable UUID id) {
         DocumentNode documentNode = documentNodeService.findById(id);
 
         return mapper.map(documentNode);
