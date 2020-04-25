@@ -2,6 +2,7 @@ package com.code4ro.legalconsultation.model.persistence;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,10 +15,11 @@ public class DocumentNode extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent")
+    @ToString.Exclude
     private DocumentNode parent;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "parent")
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<DocumentNode> children;
 
     @Column(name = "document_node_type")

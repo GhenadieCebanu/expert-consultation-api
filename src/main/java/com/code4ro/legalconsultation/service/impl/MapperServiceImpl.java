@@ -1,7 +1,7 @@
 package com.code4ro.legalconsultation.service.impl;
 
 import com.code4ro.legalconsultation.model.dto.BaseEntityDto;
-import com.code4ro.legalconsultation.model.dto.DocumentNodeDto;
+import com.code4ro.legalconsultation.model.dto.documentnode.DocumentNodeDto;
 import com.code4ro.legalconsultation.model.dto.DocumentViewDto;
 import com.code4ro.legalconsultation.model.dto.UserDto;
 import com.code4ro.legalconsultation.model.persistence.BaseEntity;

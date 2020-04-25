@@ -1,7 +1,8 @@
 package com.code4ro.legalconsultation.controller;
 
 import com.code4ro.legalconsultation.converters.DocumentNodeMapper;
-import com.code4ro.legalconsultation.model.dto.DocumentNodeDto;
+import com.code4ro.legalconsultation.model.dto.documentnode.DocumentNodeCreateDto;
+import com.code4ro.legalconsultation.model.dto.documentnode.DocumentNodeDto;
 import com.code4ro.legalconsultation.model.persistence.DocumentNode;
 import com.code4ro.legalconsultation.service.api.DocumentNodeService;
 import io.swagger.annotations.ApiOperation;
@@ -39,9 +40,13 @@ public class DocumentNodeController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UUID> create(
-            @Valid @RequestBody DocumentNodeDto documentNodeDto) {
+            @Valid @RequestBody DocumentNodeCreateDto documentNodeCreateDto) {
 
-        DocumentNode inputDocumentNode = mapper.map(documentNodeDto);
+        DocumentNode inputDocumentNode = mapper.map(documentNodeCreateDto);
+        if (documentNodeCreateDto.getParentId() != null) {
+            DocumentNode parent = documentNodeService.findById(documentNodeCreateDto.getParentId());
+            inputDocumentNode.setParent(parent);
+        }
         DocumentNode documentNode = documentNodeService.create(inputDocumentNode);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

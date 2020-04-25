@@ -1,6 +1,6 @@
 package com.code4ro.legalconsultation.converters;
 
-import com.code4ro.legalconsultation.model.dto.DocumentNodeDto;
+import com.code4ro.legalconsultation.model.dto.documentnode.DocumentNodeDto;
 import com.code4ro.legalconsultation.model.persistence.DocumentNode;
 import com.code4ro.legalconsultation.service.api.CommentService;
 import com.code4ro.legalconsultation.service.api.MapperService;
