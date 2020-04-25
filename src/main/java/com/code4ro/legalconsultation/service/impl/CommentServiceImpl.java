@@ -56,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public CommentDto create(UUID nodeId, final CommentDto commentDto) {
-        final DocumentNode node = documentNodeService.getEntity(nodeId);
+        final DocumentNode node = documentNodeService.findById(nodeId);
 
         final ApplicationUser currentUser = currentUserService.getCurrentUser();
 

@@ -67,7 +67,7 @@ public class CommentServiceTest {
         final Comment comment = new Comment();
         when(mapperService.map(commentDto, Comment.class)).thenReturn(comment);
         when(currentUserService.getCurrentUser()).thenReturn(currentUser);
-        when(documentNodeService.getEntity(any())).thenReturn(documentNode);
+        when(documentNodeService.findById(any())).thenReturn(documentNode);
 
         commentService.create(id, commentDto);
 
