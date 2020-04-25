@@ -2,14 +2,9 @@ package com.code4ro.legalconsultation.service.impl;
 
 import com.code4ro.legalconsultation.model.dto.DocumentConsolidatedDto;
 import com.code4ro.legalconsultation.model.dto.DocumentViewDto;
-import com.code4ro.legalconsultation.model.persistence.DocumentConfiguration;
-import com.code4ro.legalconsultation.model.persistence.DocumentConsolidated;
-import com.code4ro.legalconsultation.model.persistence.DocumentMetadata;
-import com.code4ro.legalconsultation.model.persistence.DocumentNode;
-import com.code4ro.legalconsultation.service.api.DocumentNodeService;
-import com.code4ro.legalconsultation.service.api.DocumentService;
-import com.code4ro.legalconsultation.service.api.PDFService;
-import com.code4ro.legalconsultation.service.api.StorageApi;
+import com.code4ro.legalconsultation.model.dto.UserDto;
+import com.code4ro.legalconsultation.model.persistence.*;
+import com.code4ro.legalconsultation.service.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -31,18 +26,24 @@ public class DocumentServiceImpl implements DocumentService {
     private final PDFService pdfService;
     private final DocumentNodeService documentNodeService;
     private final StorageApi storageApi;
+    private final UserService userService;
+    private final MapperService mapperService;
 
     @Autowired
     public DocumentServiceImpl(final DocumentConsolidatedService documentConsolidatedService,
                                final DocumentMetadataService documentMetadataService,
                                final PDFService pdfService,
                                final DocumentNodeService documentNodeService,
-                               final StorageApi storageApi) {
+                               final StorageApi storageApi,
+                               final UserService userService,
+                               final MapperService mapperService) {
         this.documentConsolidatedService = documentConsolidatedService;
         this.documentMetadataService = documentMetadataService;
         this.pdfService = pdfService;
         this.documentNodeService = documentNodeService;
         this.storageApi = storageApi;
+        this.userService = userService;
+        this.mapperService = mapperService;
     }
 
     @Transactional(readOnly = true)
@@ -102,5 +103,21 @@ public class DocumentServiceImpl implements DocumentService {
     public void deleteById(final UUID id) {
         documentConsolidatedService.getEntity(id);
         documentConsolidatedService.deleteById(id);
+    }
+
+    @Override
+    public void assignUsers(final UUID id, final Set<UUID> userIds) {
+        final List<User> users = userService.findByIds(userIds);
+        final DocumentConsolidated documentConsolidated = documentConsolidatedService.getEntity(id);
+        documentConsolidated.setAssignedUsers(users);
+
+        documentConsolidatedService.saveOne(documentConsolidated);
+    }
+
+    @Override
+    public List<UserDto> getAssignedUsers(final UUID id) {
+        final DocumentConsolidated documentConsolidated = documentConsolidatedService.getEntity(id);
+        final List<User> assignedUsers = documentConsolidated.getAssignedUsers();
+        return mapperService.mapList(assignedUsers, UserDto.class);
     }
 }

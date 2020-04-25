@@ -10,7 +10,6 @@ import com.code4ro.legalconsultation.service.api.MapperService;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +91,6 @@ public class UserService {
     }
 
 
-
     private List<UserDto> read(InputStream stream) throws IOException {
         final CsvSchema schema = CsvSchema.builder()
                 .addColumn("firstName")
@@ -118,6 +116,10 @@ public class UserService {
     public List<UserDto> extractFromCopyPaste(final List<String> usersList) {
         final String concatenatedUsers = StringUtils.join(usersList, "\n");
         return extractUsers(new ByteArrayInputStream(concatenatedUsers.getBytes()));
+    }
+
+    public List<User> findByIds(final Collection<UUID> ids) {
+        return userRepository.findAllById(ids);
     }
 
     private List<UserDto> extractUsers(final InputStream usersInputStream) {

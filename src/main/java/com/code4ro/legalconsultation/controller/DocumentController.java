@@ -1,6 +1,8 @@
 package com.code4ro.legalconsultation.controller;
 
+import com.code4ro.legalconsultation.model.DocumentUserAssignmentDto;
 import com.code4ro.legalconsultation.model.dto.DocumentViewDto;
+import com.code4ro.legalconsultation.model.dto.UserDto;
 import com.code4ro.legalconsultation.model.persistence.DocumentConsolidated;
 import com.code4ro.legalconsultation.model.persistence.DocumentMetadata;
 import com.code4ro.legalconsultation.service.api.DocumentService;
@@ -80,5 +82,20 @@ public class DocumentController {
                                                @Valid @RequestBody DocumentViewDto documentViewDto) {
         DocumentConsolidated consolidated = documentService.update(id, documentViewDto);
         return ResponseEntity.ok(consolidated.getId());
+    }
+
+    @ApiOperation("Assign users to a document")
+    @PostMapping("/{id}/users")
+    public ResponseEntity<Void> assignUsers(@ApiParam(value = "Id of the document being modified") @PathVariable("id") UUID id,
+                                            @Valid @RequestBody DocumentUserAssignmentDto documentUserAssignmentDto) {
+        documentService.assignUsers(id, documentUserAssignmentDto.getUserIds());
+        return ResponseEntity.ok().build();
+    }
+
+    @ApiOperation("Get assigned users of a document")
+    @GetMapping("{id}/users")
+    public ResponseEntity<List<UserDto>> getAssignedUsers(@ApiParam(value = "Id of the document") @PathVariable("id") UUID id) {
+        final List<UserDto> assignedUsers = documentService.getAssignedUsers(id);
+        return ResponseEntity.ok(assignedUsers);
     }
 }
