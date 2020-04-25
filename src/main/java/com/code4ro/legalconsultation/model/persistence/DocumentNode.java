@@ -16,7 +16,8 @@ public class DocumentNode extends BaseEntity {
     @JoinColumn(name = "parent")
     private DocumentNode parent;
 
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent")
     private List<DocumentNode> children;
 
     @Column(name = "document_node_type")
