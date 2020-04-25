@@ -21,4 +21,5 @@ public class DocumentNodeDto extends BaseEntityDto {
     private String identifier;
 
     private BigInteger numberOfComments;
+    private String identifier;
 }

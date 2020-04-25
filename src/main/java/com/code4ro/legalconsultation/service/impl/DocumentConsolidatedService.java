@@ -37,9 +37,9 @@ public class DocumentConsolidatedService {
     }
 
     @Transactional(readOnly = true)
-    public DocumentConsolidatedDto getOne(final UUID id) {
+    public DocumentConsolidatedDto getByDocumentMetadataId(final UUID id) {
         DocumentConsolidated documentConsolidated = documentConsolidatedRepository.
-                findById(id).orElseThrow(EntityNotFoundException::new);
+                findByDocumentMetadataId(id).orElseThrow(EntityNotFoundException::new);
 
         return mapperService.map(documentConsolidated, DocumentConsolidatedDto.class);
     }

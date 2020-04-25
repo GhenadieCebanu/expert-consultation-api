@@ -36,10 +36,10 @@ public class DocumentConsolidatedServiceTest {
     @Test
     public void getDocument(){
         final UUID uuid = UUID.randomUUID();
-        when(documentConsolidatedRepository.findById(any(UUID.class))).thenReturn(Optional.of(new DocumentConsolidated()));
+        when(documentConsolidatedRepository.findByDocumentMetadataId(any(UUID.class))).thenReturn(Optional.of(new DocumentConsolidated()));
 
-        documentConsolidatedService.getOne(uuid);
-        verify(documentConsolidatedRepository).findById(uuid);
+        documentConsolidatedService.getByDocumentMetadataId(uuid);
+        verify(documentConsolidatedRepository).findByDocumentMetadataId(uuid);
     }
 
     @Test

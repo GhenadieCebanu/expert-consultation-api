@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DocumentConsolidatedDto extends BaseEntityDto {
+    private DocumentMetadataDto documentMetadata;
     private DocumentNodeDto documentNode;
-    private DocumentConfigurationDto documentConfigutaion;
+    private DocumentConfigurationDto documentConfiguration;
 }

@@ -29,6 +29,7 @@ public class DocumentNodeDtoConverter extends AbstractConverter<DocumentNode, Do
         dto.setTitle(documentNode.getTitle());
         dto.setContent(documentNode.getContent());
         dto.setNumberOfComments(commentService.count(documentNode.getId()));
+        dto.setIdentifier(documentNode.getIdentifier());
         return dto;
     }
 }

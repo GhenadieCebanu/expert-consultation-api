@@ -1,5 +1,6 @@
 package com.code4ro.legalconsultation.service.impl;
 
+import com.code4ro.legalconsultation.model.dto.DocumentMetadataDto;
 import com.code4ro.legalconsultation.model.dto.DocumentViewDto;
 import com.code4ro.legalconsultation.model.persistence.DocumentMetadata;
 import com.code4ro.legalconsultation.repository.DocumentMetadataRepository;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,8 +35,11 @@ public class DocumentMetadataService {
         return documentMetadataRepository.findAll(pageable);
     }
 
-    public Optional<DocumentMetadata> fetchOne(final String id) {
-        return documentMetadataRepository.findById(UUID.fromString(id));
+    public DocumentMetadataDto fetchOne(final UUID id) {
+        DocumentMetadata documentMetadata = documentMetadataRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        
+        return mapperService.map(documentMetadata, DocumentMetadataDto.class);
     }
 
     public DocumentMetadata build(final DocumentViewDto document){
